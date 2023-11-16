@@ -1,145 +1,238 @@
-from customtkinter import *
-from CTkTable import CTkTable
-from PIL import Image
+from tkinter import *
 
-class Admin: 
+root = Tk()
 
-  app = CTk()
-  app.geometry("856x645")
-  app.resizable(0,0)
+class InventoryManagement(Frame):
 
-  icon = Image.open("logo.png")
-  app.iconphoto = (False, icon)
-  app.title = "Inventory Management"
-  
-  
-  
+    # Creates constructor for main frame of application
 
+    def __init__(self):
+        Frame.__init__(self)
+        self.master.title('Inventory Management')
+        self.grid()
+        self.items = []
+        root.geometry("650x450")
 
-  set_appearance_mode("light")
+        self.itemCount = len(self.items)
 
-  sidebar_frame = CTkFrame(master=app, fg_color="#2A8C55",  width=176, height=650, corner_radius=0)
-  sidebar_frame.pack_propagate(0)
-  sidebar_frame.pack(fill="y", anchor="w", side="left")
+        # Lines 23 - 36 are top of application, search feature labels/entry/buttons
 
-  logo_img_data = Image.open("bsu.png")
-  logo_img = CTkImage(dark_image=logo_img_data, light_image=logo_img_data, size=(77.68, 85.42))
+        Label(self, text='Search (Item Number): ').grid(row=0,
+                                                        column=1, padx=6, pady=20, sticky=E)
 
-  CTkLabel(master=sidebar_frame, text="", image=logo_img).pack(pady=(38, 0), anchor="center")
+        self._box1 = IntVar()
+        self._input = Entry(self, width=20, textvariable=self._box1)
+        self._input.grid(row=0, column=2, padx=8, pady=20, sticky=W)
 
-  analytics_img_data = Image.open("analytics_icon.png")
-  analytics_img = CTkImage(dark_image=analytics_img_data, light_image=analytics_img_data)
+        self.btn1 = Button(self, text='Search',
+                           command=self.searchInventory)
+        self.btn1.grid(row=0, column=3, padx=8, pady=20, sticky=W)
 
-  CTkButton(master=sidebar_frame, image=analytics_img, text="Dashboard", fg_color="transparent", font=("Arial Bold", 14), hover_color="#207244", anchor="w").pack(anchor="center", ipady=5, pady=(60, 0))
+        self.btn2 = Button(self, text='Reset', command=self.clearSearch)
+        self.btn2.grid(row=0, column=4, padx=4, pady=20, sticky=W)
 
-  package_img_data = Image.open("package_icon.png")
-  package_img = CTkImage(dark_image=package_img_data, light_image=package_img_data)
+        # Lines 40 - 45 is the main text area for inventory display
 
-  CTkButton(master=sidebar_frame, image=package_img, text="Orders", fg_color="#fff", font=("Arial Bold", 14), text_color="#2A8C55", hover_color="#eee", anchor="w").pack(anchor="center", ipady=5, pady=(16, 0))
+        self.scroll = Scrollbar(self)
+        self.scroll.grid(row=3, column=4)
+        self.text = Text(self, width=60, height=10, wrap=WORD,
+                         yscrollcommand=self.scroll.set)
+        self.text.grid(row=3, column=0, columnspan=5, padx=20, pady=20)
+        self.scroll.config(command=self.text.yview)
 
-  list_img_data = Image.open("list_icon.png")
-  list_img = CTkImage(dark_image=list_img_data, light_image=list_img_data)
-  CTkButton(master=sidebar_frame, image=list_img, text="Orders", fg_color="transparent", font=("Arial Bold", 14), hover_color="#207244", anchor="w").pack(anchor="center", ipady=5, pady=(16, 0))
+        Label(self, text="Item Count: " + str(self.itemCount)).grid(row=4, column=0, pady=5, sticky=N)
 
-  returns_img_data = Image.open("returns_icon.png")
-  returns_img = CTkImage(dark_image=returns_img_data, light_image=returns_img_data)
-  CTkButton(master=sidebar_frame, image=returns_img, text="Returns", fg_color="transparent", font=("Arial Bold", 14), hover_color="#207244", anchor="w").pack(anchor="center", ipady=5, pady=(16, 0))
+        # Lines 49 - 75 are labels/entry boxes for new/edit item entry
 
-  settings_img_data = Image.open("settings_icon.png")
-  settings_img = CTkImage(dark_image=settings_img_data, light_image=settings_img_data)
-  CTkButton(master=sidebar_frame, image=settings_img, text="Settings", fg_color="transparent", font=("Arial Bold", 14), hover_color="#207244", anchor="w").pack(anchor="center", ipady=5, pady=(16, 0))
+        Label(self, text='Item Number ').grid(row=6, column=0, padx=6,
+                                              pady=6, sticky=W)
 
-  person_img_data = Image.open("person_icon.png")
-  person_img = CTkImage(dark_image=person_img_data, light_image=person_img_data)
-  CTkButton(master=sidebar_frame, image=person_img, text="Account", fg_color="transparent", font=("Arial Bold", 14), hover_color="#207244", anchor="w").pack(anchor="center", ipady=5, pady=(160, 0))
+        self._box2 = StringVar()
+        self._input1 = Entry(self, width=20, textvariable=self._box2)
+        self._input1.grid(row=6, column=1, padx=8, pady=10, sticky=E)
 
-  main_view = CTkFrame(master=app, fg_color="#fff",  width=680, height=650, corner_radius=0)
-  main_view.pack_propagate(0)
-  main_view.pack(side="left")
+        Label(self, text='Item Name ').grid(row=6, column=2, padx=6,
+                                            pady=6, sticky=E)
 
-  title_frame = CTkFrame(master=main_view, fg_color="transparent")
-  title_frame.pack(anchor="n", fill="x",  padx=27, pady=(29, 0))
+        self._box3 = StringVar()
+        self._input = Entry(self, width=20, textvariable=self._box3)
+        self._input.grid(row=6, column=3, padx=8, pady=10, sticky=E)
 
-  CTkLabel(master=title_frame, text="Orders", font=("Arial Black", 25), text_color="#2A8C55").pack(anchor="nw", side="left")
+        Label(self, text='On Hand ').grid(row=10, column=0, padx=6,
+                                          pady=6, sticky=E)
 
-  CTkButton(master=title_frame, text="+ New Order",  font=("Arial Black", 15), text_color="#fff", fg_color="#2A8C55", hover_color="#207244").pack(anchor="ne", side="right")
+        self._box4 = StringVar()
+        self._input = Entry(self, width=20, textvariable=self._box4)
+        self._input.grid(row=10, column=1, padx=8, pady=10, sticky=W)
 
-  metrics_frame = CTkFrame(master=main_view, fg_color="transparent")
-  metrics_frame.pack(anchor="n", fill="x",  padx=27, pady=(36, 0))
+        Label(self, text='Price ').grid(row=10, column=2, padx=6,
+                                        pady=6, sticky=E)
 
-  orders_metric = CTkFrame(master=metrics_frame, fg_color="#2A8C55", width=200, height=60)
-  orders_metric.grid_propagate(0)
-  orders_metric.pack(side="left")
+        self._box5 = StringVar()
+        self._input = Entry(self, width=20, textvariable=self._box5)
+        self._input.grid(row=10, column=3, padx=8, pady=10)
 
-  logitics_img_data = Image.open("logistics_icon.png")
-  logistics_img = CTkImage(light_image=logitics_img_data, dark_image=logitics_img_data, size=(43, 43))
+        # Lines 79 - 88 are buttons for corresponding functions to add/edit/delete items from text area
 
-  CTkLabel(master=orders_metric, image=logistics_img, text="").grid(row=0, column=0, rowspan=2, padx=(12,5), pady=10)
+        self.btn3 = Button(self, text='Add Item', command=self.addItem)
+        self.btn3.grid(row=11, column=1, padx=5, pady=20, sticky=W)
 
-  CTkLabel(master=orders_metric, text="Orders", text_color="#fff", font=("Arial Black", 15)).grid(row=0, column=1, sticky="sw")
-  CTkLabel(master=orders_metric, text="123", text_color="#fff",font=("Arial Black", 15), justify="left").grid(row=1, column=1, sticky="nw", pady=(0,10))
+        self.btn4 = Button(self, text='Edit Item',
+                           command=self.editItem)
+        self.btn4.grid(row=11, column=2, padx=5, pady=20, sticky=W)
 
+        self.btn4 = Button(self, text='Delete Item',
+                           command=self.deleteItem)
+        self.btn4.grid(row=11, column=3, padx=5, pady=20, sticky=W)
 
-  shipped_metric = CTkFrame(master=metrics_frame, fg_color="#2A8C55", width=200, height=60)
-  shipped_metric.grid_propagate(0)
-  shipped_metric.pack(side="left",expand=True, anchor="center")
+        # Lines 91 - 98 inserts headers into text area and sets focus to Item Number entry box
+        self.text.insert(END, 'Item Number' + '\t\t' + 'Item Name'
+                         + '\t\t' + 'On Hand' + '\t\t' + 'Price'
+                         + '\t\t')
+        self.text.insert(END,
+                         '------------------------------------------------------------'
+                         )
+        self.text.configure(state="disabled")
+        self._input1.focus_set()
 
-  shipping_img_data = Image.open("shipping_icon.png")
-  shipping_img = CTkImage(light_image=shipping_img_data, dark_image=shipping_img_data, size=(43, 43))
-
-  CTkLabel(master=shipped_metric, image=shipping_img, text="").grid(row=0, column=0, rowspan=2, padx=(12,5), pady=10)
-
-  CTkLabel(master=shipped_metric, text="Shipping", text_color="#fff", font=("Arial Black", 15)).grid(row=0, column=1, sticky="sw")
-  CTkLabel(master=shipped_metric, text="91", text_color="#fff",font=("Arial Black", 15), justify="left").grid(row=1, column=1, sticky="nw", pady=(0,10))
-
-  delivered_metric = CTkFrame(master=metrics_frame, fg_color="#2A8C55", width=200, height=60)
-  delivered_metric.grid_propagate(0)
-  delivered_metric.pack(side="right",)
-
-  delivered_img_data = Image.open("delivered_icon.png")
-  delivered_img = CTkImage(light_image=delivered_img_data, dark_image=delivered_img_data, size=(43, 43))
-
-  CTkLabel(master=delivered_metric, image=delivered_img, text="").grid(row=0, column=0, rowspan=2, padx=(12,5), pady=10)
-
-  CTkLabel(master=delivered_metric, text="Delivered", text_color="#fff", font=("Arial Black", 15)).grid(row=0, column=1, sticky="sw")
-  CTkLabel(master=delivered_metric, text="23", text_color="#fff",font=("Arial Black", 15), justify="left").grid(row=1, column=1, sticky="nw", pady=(0,10))
-
-  search_container = CTkFrame(master=main_view, height=50, fg_color="#F0F0F0")
-  search_container.pack(fill="x", pady=(45, 0), padx=27)
-
-  CTkEntry(master=search_container, width=305, placeholder_text="Search Order", border_color="#2A8C55", border_width=2).pack(side="left", padx=(13, 0), pady=15)
-
-  CTkComboBox(master=search_container, width=125, values=["Date", "Most Recent Order", "Least Recent Order"], button_color="#2A8C55", border_color="#2A8C55", border_width=2, button_hover_color="#207244",dropdown_hover_color="#207244" , dropdown_fg_color="#2A8C55", dropdown_text_color="#fff").pack(side="left", padx=(13, 0), pady=15)
-  CTkComboBox(master=search_container, width=125, values=["Status", "Processing", "Confirmed", "Packing", "Shipping", "Delivered", "Cancelled"], button_color="#2A8C55", border_color="#2A8C55", border_width=2, button_hover_color="#207244",dropdown_hover_color="#207244" , dropdown_fg_color="#2A8C55", dropdown_text_color="#fff").pack(side="left", padx=(13, 0), pady=15)
-
-  table_data = [
-    ["Order ID", "Item Name", "Customer", "Address", "Status", "Quantity"],
-    ['3833', 'Smartphone', 'Alice', '123 Main St', 'Confirmed', '8'],
-    ['6432', 'Laptop', 'Bob', '456 Elm St', 'Packing', '5'],
-    ['2180', 'Tablet', 'Crystal', '789 Oak St', 'Delivered', '1'],
-    ['5438', 'Headphones', 'John', '101 Pine St', 'Confirmed', '9'],
-    ['9144', 'Camera', 'David', '202 Cedar St', 'Processing', '2'],
-    ['7689', 'Printer', 'Alice', '303 Maple St', 'Cancelled', '2'],
-    ['1323', 'Smartwatch', 'Crystal', '404 Birch St', 'Shipping', '6'],
-    ['7391', 'Keyboard', 'John', '505 Redwood St', 'Cancelled', '10'],
-    ['4915', 'Monitor', 'Alice', '606 Fir St', 'Shipping', '6'],
-    ['5548', 'External Hard Drive', 'David', '707 Oak St', 'Delivered', '10'],
-    ['5485', 'Table Lamp', 'Crystal', '808 Pine St', 'Confirmed', '4'],
-    ['7764', 'Desk Chair', 'Bob', '909 Cedar St', 'Processing', '9'],
-    ['8252', 'Coffee Maker', 'John', '1010 Elm St', 'Confirmed', '6'],
-    ['2377', 'Blender', 'David', '1111 Redwood St', 'Shipping', '2'],
-    ['5287', 'Toaster', 'Alice', '1212 Maple St', 'Processing', '1'],
-    ['7739', 'Microwave', 'Crystal', '1313 Cedar St', 'Confirmed', '8'],
-    ['3129', 'Refrigerator', 'John', '1414 Oak St', 'Processing', '5'],
-    ['4789', 'Vacuum Cleaner', 'Bob', '1515 Pine St', 'Cancelled', '10']
-]
-
-  table_frame = CTkScrollableFrame(master=main_view, fg_color="transparent")
-  table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-  table = CTkTable(master=table_frame, values=table_data, colors=["#E6E6E6", "#EEEEEE"], header_color="#2A8C55", hover_color="#B4B4B4")
-  table.edit_row(0, text_color="#fff", hover_color="#2A8C55")
-  table.pack(expand=True)
+    ''' addItem() function inserts headers into text area, grabs values from entry boxes 
+        and appends them to a list of dictionaries if entry boxes are not empty.  It then prints
+        each item(dictionary) to the text area and clears the entry boxes. '''
 
 
-  root = CTk
-  app.mainloop() 
+    def addItem(self):
+
+        self.text.configure(state="normal")
+        self.text.delete(1.0, END)
+        self.text.insert(END, 'Item Number' + '\t\t' + 'Item Name'
+                         + '\t\t' + 'On Hand' + '\t\t' + 'Price'
+                         + '\t\t')
+        self.text.insert(END,
+                         '------------------------------------------------------------'
+                         )
+
+        items = self.items
+
+        iNum = self._box2.get()
+        iName = self._box3.get()
+        oHand = self._box4.get()
+        iPrice = self._box5.get()
+    
+        if (iNum != '' and iName != '' and oHand != '' and iPrice != ''):
+            record = {
+                0: iNum,
+                1: iName,
+                2: oHand,
+                3: iPrice,
+            }
+            items.append(record)
+
+            for item in items:
+                self.text.insert(END, item[0] + '\t\t' + item[1] + '\t\t'
+                                 + item[2] + '\t\t' + item[3] + '\t\t')
+        else:
+            self.text.delete(1.0, END)
+            self.text.insert(END, 'Error: One or more fields have been left blank.')
+
+        self._box2.set('')
+        self._box3.set('')
+        self._box4.set('')
+        self._box5.set('')
+        self._input1.focus_set()
+
+        self.text.configure(state="disabled")
+
+        return
+
+    ''' searchInventory() function inserts headers into text area, gets value of search box entry and compares to
+        list of dictionaries.  If the search box value matches the item number key,
+         it inserts the dictionaries values into the text area. '''
+
+
+    def searchInventory(self):
+        self.text.configure(state="normal")
+        self.text.delete(1.0, END)
+        self.text.insert(END, 'Item Number' + '\t\t' + 'Item Name'
+                         + '\t\t' + 'On Hand' + '\t\t' + 'Price'
+                         + '\t\t')
+        self.text.insert(END,
+                         '------------------------------------------------------------'
+                         )
+
+        searchVal = str(self._box1.get())
+
+        for item in self.items:
+            if item[0] == searchVal:
+                self.text.insert(END, item[0] + '\t\t' + item[1]
+                                 + '\t\t' + item[2] + '\t\t' + item[3]
+                                 + '\t\t')
+
+        self.text.configure(state="disabled")
+
+    # Simple function attached to reset button to clear the search box
+
+    def clearSearch(self):
+        self._box1.set('')
+
+    ''' editItem() function clears the entry boxes to prevent errors.  It then grabs the search box value and compares
+        to the list of dictionaries.  If the dictionary's item number matches the value it inserts the value of the 
+        dictionary into the entry boxes for editing. '''
+
+
+    def editItem(self):
+        self.text.configure(state="normal")
+        self._box2.set('')
+        self._box3.set('')
+        self._box4.set('')
+        self._box5.set('')
+
+        items = self.items
+
+        searchVal = str(self._box1.get())
+
+        for item in items:
+            if item[0] == searchVal:
+                self.items.remove(item)
+                self._box2.set(item[0])
+                self._box3.set(item[1])
+                self._box4.set(item[2])
+                self._box5.set(item[3])
+
+        self._box1.set('')
+        self._input1.focus_set()
+
+        self.text.configure(state="disabled")
+
+
+    # Simple function to delete dictionary with item number that matches the search box value
+
+    def deleteItem(self):
+        self.text.configure(state="normal")
+        self.text.delete(1.0, END)
+        self.text.insert(END, 'Item Number' + '\t\t' + 'Item Name'
+                         + '\t\t' + 'On Hand' + '\t\t' + 'Price'
+                         + '\t\t')
+        self.text.insert(END,
+                         '------------------------------------------------------------'
+                         )
+
+        items = self.items
+
+        searchVal = str(self._box1.get())
+
+        for item in items:
+            if item[0] == searchVal:
+                self.items.remove(item)
+
+        for item in items:
+            self.text.insert(END, item[0] + '\t\t' + item[1] + '\t\t'
+                             + item[2] + '\t\t' + item[3] + '\t\t')
+
+        self._box1.set('')
+        self.text.configure(state="disabled")
+
+def main():
+    InventoryManagement().mainloop()
+
+
+main()
