@@ -10,13 +10,11 @@ def login():
     if user == "zy" and code == "password":
         root = Toplevel(screen)
         root.geometry("650x450")
-        root.resizable (0, 0)
-        command = screen.destroy()
-       
-        
+        root.resizable (False, False)
         
 
-#inventory frame
+
+#copy paste the code here
        
 
         class InventoryManagement(Frame):
@@ -28,13 +26,8 @@ def login():
                 self.master.title('Inventory Management')
                 self.grid()
                 self.items = []
-                self.resizable = (0,0)
 
                 self.itemCount = len(self.items)
-
-       
-        
-
 
         # search feature labels/entry/buttons
 
@@ -52,7 +45,7 @@ def login():
                 self.btn2 = Button(self, text='Reset', command=self.clearSearch)
                 self.btn2.grid(row=0, column=4, padx=4, pady=20, sticky=W)
 
-        # main text area for inventory display
+        # Lines 40 - 45 is the main text area for inventory display
 
                 self.scroll = Scrollbar(self)
                 self.scroll.grid(row=3, column=4)
@@ -63,7 +56,7 @@ def login():
 
                 Label(self, text="Item Count: " + str(self.itemCount)).grid(row=4, column=0, pady=5, sticky=N)
 
-        # labels/entry boxes for new/edit item entry
+        # Lines 49 - 75 are labels/entry boxes for new/edit item entry
 
                 Label(self, text='Item Number ').grid(row=6, column=0, padx=6,
                                               pady=6, sticky=W)
@@ -93,7 +86,7 @@ def login():
                 self._input = Entry(self, width=20, textvariable=self._box5)
                 self._input.grid(row=10, column=3, padx=8, pady=10)
 
-        # buttons for corresponding functions to add/edit/delete items from text area
+        # Lines 79 - 88 are buttons for corresponding functions to add/edit/delete items from text area
 
                 self.btn3 = Button(self, text='Add Item', command=self.addItem)
                 self.btn3.grid(row=11, column=1, padx=5, pady=20, sticky=W)
@@ -106,7 +99,7 @@ def login():
                            command=self.deleteItem)
                 self.btn4.grid(row=11, column=3, padx=5, pady=20, sticky=W)
 
-        # inserts headers into text area and sets focus to Item Number entry box
+        # Lines 91 - 98 inserts headers into text area and sets focus to Item Number entry box
                 self.text.insert(END, 'Item Number' + '\t\t' + 'Item Name'
                          + '\t\t' + 'On Hand' + '\t\t' + 'Price'
                          + '\t\t')
@@ -278,13 +271,15 @@ def login():
         messagebox.showerror("Error", "Invalid Password")
 
     
- 
-        #PASTE SHOP CODE HERE
 
-    
+def student_login():
+    student_user = student_username.get()
+    student_code = student_password.get()
 
-
-
+    if student_user == "student" and student_code == "password":
+        messagebox.showinfo("Success", "Student login successful!")
+    else:
+        messagebox.showerror("Error", "Invalid student username or password")
 
 
 def main_screen():
@@ -293,8 +288,6 @@ def main_screen():
     global username
     global password
     
-
-
     #login
     screen = Tk()
     screen.geometry("1199x600+100+50")
@@ -323,21 +316,44 @@ def main_screen():
     username = StringVar()
     password = StringVar()
 
-    entry_username = Entry (mainframe, textvariable= username, width= 12, bd = 2, font = ("arial", 20))
+    entry_username = Entry (mainframe, textvariable= username, width= 12, bd = 2, font = ("arial", 30))
     entry_username.place (x = 90, y =170, width = 320, height = 35)
 
-    entry_password = Entry (mainframe, textvariable= password, width= 12, bd = 2, font = ("arial", 20), show = "*")
+    entry_password = Entry (mainframe, textvariable= password, width= 12, bd = 2, font = ("arial", 30), show = "*")
     entry_password.place (x = 90, y =240, width = 320, height = 35)
 
     #buttons
     Button(mainframe, text = "Login", bd = 0, font = ("Goudy old style", 12), bg = "#6162FF", fg = "white", cursor ="hand2", command = login).place (x = 90, y = 320, width = 180, height = 40)
+    
+    Button(mainframe, text="Student Login", bd=0, font=("Goudy old style", 12),
+           bg="#6162FF", fg="white", cursor="hand2", command=student_login).place(x=280, y=320, width=180, height=40)
 
     Button(mainframe, text = "Exit", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = screen.destroy).place (x = 90, y = 280)
 
 
     screen.mainloop()
 
+def student_login_screen():
+    global student_screen
+    global student_username
+    global student_password
 
+    student_screen = Tk()
+    student_screen.geometry("400x300+500+200")
+    student_screen.title("Student Login")
+
+    student_username = StringVar()
+    student_password = StringVar()
+
+    Label(student_screen, text="Student Username:").pack(pady=10)
+    Entry(student_screen, textvariable=student_username).pack()
+
+    Label(student_screen, text="Student Password:").pack(pady=10)
+    Entry(student_screen, textvariable=student_password, show="*").pack()
+
+    Button(student_screen, text="Login", command=student_login).pack(pady=20)
+
+    student_screen.mainloop()
 
 
 
