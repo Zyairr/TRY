@@ -107,6 +107,9 @@ class InventoryManagement(Frame):
                          )
                 self.text.configure(state="disabled")
                 self._input1.focus_set()
+                
+                self.logout_btn = Button(self, text='Logout', command=self.logout)
+                self.logout_btn.grid(row=12, column=1, padx=5, pady=20, sticky=W)
 
             ''' addItem() function inserts headers into text area, grabs values from entry boxes 
         and appends them to a list of dictionaries if entry boxes are not empty.  It then prints
@@ -243,6 +246,12 @@ class InventoryManagement(Frame):
 
                 self._box1.set('')
                 self.text.configure(state="disabled")
+            
+            def logout(self):
+                # Add any additional logout logic if needed
+                messagebox.showinfo("Logout", "Admin logout successful!")
+                self.master.destroy()  # Close the inventory management frame
+                main_screen()
                 
 def open_inventory_management():
     global inventory_management_frame
@@ -268,8 +277,47 @@ class StudentShoppingFrame(Frame):
         self.grid()
         self.items = items
 
-        Label(text= "BSU SHOPPING PLATFORM", font = ("Impact", 30, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 180)
+        Label(self, text= "BSU SHOPPING PLATFORM", font = ("Impact", 30, "bold"), fg = "#6162FF").grid(row=0, column=1, padx=400, pady=20, sticky=E)
+        
+        # Create a Listbox to display available items
+        self.item_listbox = Listbox(self, width=60, height=10)
+        self.item_listbox.grid(row=1, column=0, columnspan=5, padx=50, pady=20)
+        
+        # Populate the Listbox with available items
+        self.populate_item_listbox()
+        
+        self.student_logout_btn = Button(self, text='Logout', command=self.student_logout)
+        self.student_logout_btn.grid(row=12, column=1, padx=5, pady=20, sticky=W)
+
+    def populate_item_listbox(self):
+        # Clear the Listbox
+        self.item_listbox.delete(0, END)
+
+        # Insert headers into the Listbox
+        self.item_listbox.insert(END, 'Item Number' + '\t\t' + 'Item Name'
+                                 + '\t\t' + 'On Hand' + '\t\t' + 'Price')
+
+        self.item_listbox.insert(END,
+                                 '------------------------------------------------------------')
+
+        # Insert available items into the Listbox
+        for item in self.items:
+            self.item_listbox.insert(END, item[0] + '\t\t' + item[1] + '\t\t'
+                                     + item[2] + '\t\t' + item[3])
+        
+        self.item_listbox.configure(state="disabled")
     
+    def student_logout(self):
+        # Add any additional logout logic if needed
+        messagebox.showinfo("Logout", "Student logout successful!")
+    
+        # Hide the current frame
+        self.grid_forget()
+    
+        # Show the main screen again
+        main_screen_ref.iconify()  # Iconify (minimize) the main screen
+        main_screen_ref.deiconify()  # Deiconify (restore) the main screen
+        
 def student_shopping():
     root = Toplevel()
     root.geometry("1199x600+100+50")
@@ -312,7 +360,7 @@ def student_login():
 
     if student_user == "student" and student_code == "password":
         messagebox.showinfo("Success", "Student login successful!")
-        screen.destroy()
+        screen.iconify()
         student_shopping()
     elif student_user == "" and student_code == "":
         messagebox.showerror("Error", "Username and password cannot be empty")
@@ -334,13 +382,10 @@ def student_login():
 
 
 def main_screen():
-
-    global screen
-    global username
-    global password
+    global main_screen_ref, screen, username, password
     
     #login
-    screen = Tk(screen)
+    screen = Tk()
     screen.geometry("1199x600+100+50")
     screen.resizable(0,0)
 
@@ -379,7 +424,8 @@ def main_screen():
     Button(mainframe, text = "Student Login", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = student_login_screen).place (x = 310, y = 280)
     Button(mainframe, text = "Exit", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = screen.destroy).place (x = 90, y = 280)
 
-
+    main_screen_ref = screen
+    
     screen.mainloop()
     
 def student_login_screen():
