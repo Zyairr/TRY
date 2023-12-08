@@ -18,12 +18,26 @@ def login():
         root = Toplevel(screen)
         root.geometry("650x450")
         root.resizable (False, False)
-        
+    elif user == "" and code == "":
+        messagebox.showerror("Error", "Username and password cannot be empty")
+    
+    elif user == "":
+        messagebox.showerror("Error", "Username cannot be empty")
+    
+    elif code == "":
+        messagebox.showerror("Error", "Password cannot be empty")
 
+    elif user != "admin" and code != "admin":
+        messagebox.showerror("Error", "Invalid Username or Password")
+    
+    elif user != "admin":
+        messagebox.showerror("Error", "Invalid Username")
+
+    elif code!= "admin":
+        messagebox.showerror("Error", "Invalid Password")
 
 #copy paste the code here
        
-
         class InventoryManagement(Frame):
 
     # Creates constructor for main frame of application
@@ -258,27 +272,6 @@ def login():
 
         main()
 
-
-    elif user == "" and code == "":
-        messagebox.showerror("Error", "Username and password cannot be empty")
-    
-    elif user == "":
-        messagebox.showerror("Error", "Username cannot be empty")
-    
-    elif code == "":
-        messagebox.showerror("Error", "Password cannot be empty")
-
-    elif user != "admin" and code != "admin":
-        messagebox.showerror("Error", "Invalid Username or Password")
-    
-    elif user != "admin":
-        messagebox.showerror("Error", "Invalid Username")
-
-    elif code!= "admin":
-        messagebox.showerror("Error", "Invalid Password")
-
-    
-
 def student_login():
     student_user = student_username.get()
     student_code = student_password.get()
@@ -331,7 +324,7 @@ def main_screen():
     mainframe = Frame( bg = "white")
     mainframe.place( x = 330, y = 150, width = 500, height = 400)
 
-    lblTitle = Label(text= "BSU SHOP ADMIN LOGIN", font = ("Impact", 30, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 160)
+    lblTitle = Label(text= "BSU SHOP ADMIN LOGIN", font = ("Impact", 30, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 180)
     lblsubtitle = Label(text = "Login Here:", font = ("Goudy old style", 15, "bold"), fg = "#1d1d1d", bg = "white").place (x = 380, y = 250)
 
     
@@ -374,7 +367,7 @@ def student_login_screen():
     mainframe = Frame( bg = "white")
     mainframe.place( x = 330, y = 150, width = 500, height = 400)
 
-    lblTitle = Label(text= "BSU SHOP STUDENT LOGIN", font = ("Impact", 30, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 160)
+    lblTitle = Label(text= "BSU SHOP STUDENT LOGIN", font = ("Impact", 30, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 180)
     lblsubtitle = Label(text = "Login Here:", font = ("Goudy old style", 15, "bold"), fg = "#1d1d1d", bg = "white").place (x = 380, y = 250)
 
     Label (mainframe, text = "Username:", font = ("Goudy old style", 15, "bold"), fg = "black", bg = "white").place(x = 90, y = 140)
@@ -390,7 +383,7 @@ def student_login_screen():
     student_entry_password.place (x = 90, y =240, width = 320, height = 35)
 
     #buttons
-    Button(mainframe, text = "Student Login", bd = 0, font = ("Goudy old style", 12), bg = "#6162FF", fg = "white", cursor ="hand2", command = student_login).place (x = 90, y = 320, width = 180, height = 40)
+    Button(mainframe, text = "Login", bd = 0, font = ("Goudy old style", 12), bg = "#6162FF", fg = "white", cursor ="hand2", command = student_login).place (x = 90, y = 320, width = 180, height = 40)
 
     Button(mainframe, text = "Exit", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = screen.destroy).place (x = 90, y = 280)
 
