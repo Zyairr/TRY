@@ -367,10 +367,10 @@ def main_screen():
     username = StringVar()
     password = StringVar()
 
-    entry_username = Entry (mainframe, textvariable= username, width= 12, bd = 2, font = ("arial", 30))
+    entry_username = Entry (mainframe, textvariable= username, width= 12, bd = 2, font = ("arial", 20))
     entry_username.place (x = 90, y =170, width = 320, height = 35)
 
-    entry_password = Entry (mainframe, textvariable= password, width= 12, bd = 2, font = ("arial", 30), show = "*")
+    entry_password = Entry (mainframe, textvariable= password, width= 12, bd = 2, font = ("arial", 20), show = "*")
     entry_password.place (x = 90, y =240, width = 320, height = 35)
 
     #buttons
@@ -409,10 +409,10 @@ def student_login_screen():
     student_username = StringVar()
     student_password = StringVar()
 
-    student_entry_username = Entry (mainframe, textvariable= student_username, width= 12, bd = 2, font = ("arial", 30))
+    student_entry_username = Entry (mainframe, textvariable= student_username, width= 12, bd = 2, font = ("arial", 20))
     student_entry_username.place (x = 90, y =170, width = 320, height = 35)
 
-    student_entry_password = Entry (mainframe, textvariable= student_password, width= 12, bd = 2, font = ("arial", 30), show = "*")
+    student_entry_password = Entry (mainframe, textvariable= student_password, width= 12, bd = 2, font = ("arial", 20), show = "*")
     student_entry_password.place (x = 90, y =240, width = 320, height = 35)
 
     #buttons
