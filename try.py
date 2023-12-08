@@ -9,42 +9,19 @@ password = None
 student_username = None
 student_password = None
 student_screen = None
-
-def login():
-    user=username.get()
-    code=password.get()
-
-    if user == "zy" and code == "password":
-        root = Toplevel(screen)
-        root.geometry("650x450")
-        root.resizable (False, False)
-    elif user == "" and code == "":
-        messagebox.showerror("Error", "Username and password cannot be empty")
-    
-    elif user == "":
-        messagebox.showerror("Error", "Username cannot be empty")
-    
-    elif code == "":
-        messagebox.showerror("Error", "Password cannot be empty")
-
-    elif user != "admin" and code != "admin":
-        messagebox.showerror("Error", "Invalid Username or Password")
-    
-    elif user != "admin":
-        messagebox.showerror("Error", "Invalid Username")
-
-    elif code!= "admin":
-        messagebox.showerror("Error", "Invalid Password")
+inventory_management_frame = None
 
 #copy paste the code here
        
-        class InventoryManagement(Frame):
+class InventoryManagement(Frame):
 
     # Creates constructor for main frame of application
-
+    
             def __init__(self):
                 Frame.__init__(self)
-                self.master.title('Inventory Management')
+                self.master.title('ADMIN INVENTORY MANAGEMENT')
+                image_icon = PhotoImage(file="logo.png")
+                self.master.iconphoto(False, image_icon)
                 self.grid()
                 self.items = []
 
@@ -265,19 +242,55 @@ def login():
 
                 self._box1.set('')
                 self.text.configure(state="disabled")
+    
+def open_inventory_management():
+    global inventory_management_frame
 
-        def main():
-            InventoryManagement().mainloop()
+    # Check if the inventory management frame is already open
+    if inventory_management_frame is not None:
+        return
 
+    # Create the inventory management frame
+    inventory_management_frame = InventoryManagement()
+    inventory_management_frame.mainloop()
 
-        main()
+    # Set inventory_management_frame to None when the frame is closed
+    inventory_management_frame = None
+        
+def login():
+    user=username.get()
+    code=password.get()
 
+    if user == "zy" and code == "password":
+        messagebox.showinfo("Success", "Admin login successful!")
+        screen.destroy()
+        open_inventory_management()
+    elif user == "" and code == "":
+        messagebox.showerror("Error", "Username and password cannot be empty")
+    
+    elif user == "":
+        messagebox.showerror("Error", "Username cannot be empty")
+    
+    elif code == "":
+        messagebox.showerror("Error", "Password cannot be empty")
+
+    elif user != "admin" and code != "admin":
+        messagebox.showerror("Error", "Invalid Username or Password")
+    
+    elif user != "admin":
+        messagebox.showerror("Error", "Invalid Username")
+
+    elif code!= "admin":
+        messagebox.showerror("Error", "Invalid Password")
+        
+        
 def student_login():
     student_user = student_username.get()
     student_code = student_password.get()
 
     if student_user == "student" and student_code == "password":
         messagebox.showinfo("Success", "Student login successful!")
+        screen.destroy()
         root = Toplevel(student_screen)
         root.geometry("650x450")
         root.resizable (False, False)
