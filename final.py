@@ -53,25 +53,25 @@ class InventoryManagement(Frame):
                 self.text.grid(row=3, column=0, columnspan=5, padx=20, pady=20)
                 self.scroll.config(command=self.text.yview)
 
-                Label(self, text="Item Count: " + str(self.itemCount)).grid(row=4, column=0, pady=5, sticky=N)
+                Label(self, text="Item Count: \t \t "  + str(self.itemCount)).grid(row=4, column=0, pady=5, sticky=N)
 
         # labels/entry boxes for new/edit item entry
 
-                Label(self, text='Item Number ').grid(row=6, column=0, padx=6,
+                Label(self, text='Item Number \t \t').grid(row=6, column=0, padx=6,
                                               pady=6, sticky=W)
 
                 self._box2 = StringVar()
                 self._input1 = Entry(self, width=20, textvariable=self._box2)
                 self._input1.grid(row=6, column=1, padx=8, pady=10, sticky=E)
 
-                Label(self, text='Item Name ').grid(row=6, column=2, padx=6,
+                Label(self, text='Item Name \t \t').grid(row=6, column=2, padx=6,
                                             pady=6, sticky=E)
 
                 self._box3 = StringVar()
                 self._input = Entry(self, width=20, textvariable=self._box3)
                 self._input.grid(row=6, column=3, padx=8, pady=10, sticky=E)
 
-                Label(self, text='On Hand ').grid(row=10, column=0, padx=6,
+                Label(self, text='On Hand \t \t').grid(row=10, column=0, padx=6,
                                           pady=6, sticky=E)
 
                 self._box4 = StringVar()

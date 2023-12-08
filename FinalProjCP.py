@@ -8,7 +8,7 @@ root.title("bsushop.in")
 root.geometry("1360x1000")
 Heading=LabelFrame(root,bd=2,relief="groove",bg="light yellow")
 Heading.place(x=0,y=0,width=1380,height=55)
-image_logo=PhotoImage(file = "bsu logo.png")
+image_logo=PhotoImage(file = "logo.png")
 image_logo_1=PhotoImage(image_logo)
 
 
