@@ -10,11 +10,13 @@ def login():
     if user == "zy" and code == "password":
         root = Toplevel(screen)
         root.geometry("650x450")
-        root.resizable (False, False)
+        root.resizable (0, 0)
+        command = screen.destroy()
+       
         
         
 
-#copy paste the code here
+#inventory frame
        
 
         class InventoryManagement(Frame):
@@ -26,6 +28,7 @@ def login():
                 self.master.title('Inventory Management')
                 self.grid()
                 self.items = []
+                self.resizable = (0,0)
 
                 self.itemCount = len(self.items)
 
@@ -49,7 +52,7 @@ def login():
                 self.btn2 = Button(self, text='Reset', command=self.clearSearch)
                 self.btn2.grid(row=0, column=4, padx=4, pady=20, sticky=W)
 
-        # Lines 40 - 45 is the main text area for inventory display
+        # main text area for inventory display
 
                 self.scroll = Scrollbar(self)
                 self.scroll.grid(row=3, column=4)
@@ -60,7 +63,7 @@ def login():
 
                 Label(self, text="Item Count: " + str(self.itemCount)).grid(row=4, column=0, pady=5, sticky=N)
 
-        # Lines 49 - 75 are labels/entry boxes for new/edit item entry
+        # labels/entry boxes for new/edit item entry
 
                 Label(self, text='Item Number ').grid(row=6, column=0, padx=6,
                                               pady=6, sticky=W)
@@ -90,7 +93,7 @@ def login():
                 self._input = Entry(self, width=20, textvariable=self._box5)
                 self._input.grid(row=10, column=3, padx=8, pady=10)
 
-        # Lines 79 - 88 are buttons for corresponding functions to add/edit/delete items from text area
+        # buttons for corresponding functions to add/edit/delete items from text area
 
                 self.btn3 = Button(self, text='Add Item', command=self.addItem)
                 self.btn3.grid(row=11, column=1, padx=5, pady=20, sticky=W)
@@ -103,7 +106,7 @@ def login():
                            command=self.deleteItem)
                 self.btn4.grid(row=11, column=3, padx=5, pady=20, sticky=W)
 
-        # Lines 91 - 98 inserts headers into text area and sets focus to Item Number entry box
+        # inserts headers into text area and sets focus to Item Number entry box
                 self.text.insert(END, 'Item Number' + '\t\t' + 'Item Name'
                          + '\t\t' + 'On Hand' + '\t\t' + 'Price'
                          + '\t\t')
@@ -275,6 +278,8 @@ def login():
         messagebox.showerror("Error", "Invalid Password")
 
     
+ 
+        #PASTE SHOP CODE HERE
 
     
 
@@ -318,10 +323,10 @@ def main_screen():
     username = StringVar()
     password = StringVar()
 
-    entry_username = Entry (mainframe, textvariable= username, width= 12, bd = 2, font = ("arial", 30))
+    entry_username = Entry (mainframe, textvariable= username, width= 12, bd = 2, font = ("arial", 20))
     entry_username.place (x = 90, y =170, width = 320, height = 35)
 
-    entry_password = Entry (mainframe, textvariable= password, width= 12, bd = 2, font = ("arial", 30), show = "*")
+    entry_password = Entry (mainframe, textvariable= password, width= 12, bd = 2, font = ("arial", 20), show = "*")
     entry_password.place (x = 90, y =240, width = 320, height = 35)
 
     #buttons
