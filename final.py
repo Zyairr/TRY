@@ -10,12 +10,13 @@ student_username = None
 student_password = None
 student_screen = None
 inventory_management_frame = None
+items = []
 
 #copy paste the code here
        
 class InventoryManagement(Frame):
 
-    # Creates constructor for main frame of application
+        # Creates constructor for main frame of application
     
             def __init__(self):
                 Frame.__init__(self)
@@ -23,7 +24,7 @@ class InventoryManagement(Frame):
                 image_icon = PhotoImage(file="logo.png")
                 self.master.iconphoto(False, image_icon)
                 self.grid()
-                self.items = []
+                self.items = items
 
                 self.itemCount = len(self.items)
 
@@ -43,7 +44,7 @@ class InventoryManagement(Frame):
                 self.btn2 = Button(self, text='Reset', command=self.clearSearch)
                 self.btn2.grid(row=0, column=4, padx=4, pady=20, sticky=W)
 
-        # Lines 40 - 45 is the main text area for inventory display
+        # main text area for inventory display
 
                 self.scroll = Scrollbar(self)
                 self.scroll.grid(row=3, column=4)
@@ -54,7 +55,7 @@ class InventoryManagement(Frame):
 
                 Label(self, text="Item Count: " + str(self.itemCount)).grid(row=4, column=0, pady=5, sticky=N)
 
-        # Lines 49 - 75 are labels/entry boxes for new/edit item entry
+        # labels/entry boxes for new/edit item entry
 
                 Label(self, text='Item Number ').grid(row=6, column=0, padx=6,
                                               pady=6, sticky=W)
@@ -84,7 +85,7 @@ class InventoryManagement(Frame):
                 self._input = Entry(self, width=20, textvariable=self._box5)
                 self._input.grid(row=10, column=3, padx=8, pady=10)
 
-        # Lines 79 - 88 are buttons for corresponding functions to add/edit/delete items from text area
+        # buttons for corresponding functions to add/edit/delete items from text area
 
                 self.btn3 = Button(self, text='Add Item', command=self.addItem)
                 self.btn3.grid(row=11, column=1, padx=5, pady=20, sticky=W)
@@ -97,7 +98,7 @@ class InventoryManagement(Frame):
                            command=self.deleteItem)
                 self.btn4.grid(row=11, column=3, padx=5, pady=20, sticky=W)
 
-        # Lines 91 - 98 inserts headers into text area and sets focus to Item Number entry box
+        # insert headers into text area and sets focus to Item Number entry box
                 self.text.insert(END, 'Item Number' + '\t\t' + 'Item Name'
                          + '\t\t' + 'On Hand' + '\t\t' + 'Price'
                          + '\t\t')
@@ -242,7 +243,7 @@ class InventoryManagement(Frame):
 
                 self._box1.set('')
                 self.text.configure(state="disabled")
-    
+                
 def open_inventory_management():
     global inventory_management_frame
 
@@ -256,7 +257,28 @@ def open_inventory_management():
 
     # Set inventory_management_frame to None when the frame is closed
     inventory_management_frame = None
-        
+  
+class StudentShoppingFrame(Frame):
+    def __init__(self, master=None):
+        Frame.__init__(self, master)
+        self.master = master
+        self.master.title('BSU SHOPPING PLATFORM')
+        image_icon = PhotoImage(file="logo.png")
+        self.master.iconphoto(False, image_icon)
+        self.grid()
+        self.items = items
+
+        Label(text= "BSU SHOPPING PLATFORM", font = ("Impact", 30, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 180)
+    
+def student_shopping():
+    root = Toplevel()
+    root.geometry("1199x600+100+50")
+    root.resizable(False, False)
+
+    # Create an instance of StudentShoppingFrame
+    student_shopping_frame = StudentShoppingFrame(master=root)
+    student_shopping_frame.mainloop()
+    
 def login():
     user=username.get()
     code=password.get()
@@ -274,13 +296,13 @@ def login():
     elif code == "":
         messagebox.showerror("Error", "Password cannot be empty")
 
-    elif user != "admin" and code != "admin":
+    elif user != "zy" and code != "password":
         messagebox.showerror("Error", "Invalid Username or Password")
     
-    elif user != "admin":
+    elif user != "zy":
         messagebox.showerror("Error", "Invalid Username")
 
-    elif code!= "admin":
+    elif code!= "password":
         messagebox.showerror("Error", "Invalid Password")
         
         
@@ -291,9 +313,7 @@ def student_login():
     if student_user == "student" and student_code == "password":
         messagebox.showinfo("Success", "Student login successful!")
         screen.destroy()
-        root = Toplevel(student_screen)
-        root.geometry("650x450")
-        root.resizable (False, False)
+        student_shopping()
     elif student_user == "" and student_code == "":
         messagebox.showerror("Error", "Username and password cannot be empty")
     
@@ -320,7 +340,7 @@ def main_screen():
     global password
     
     #login
-    screen = Tk()
+    screen = Tk(screen)
     screen.geometry("1199x600+100+50")
     screen.resizable(0,0)
 
@@ -361,7 +381,7 @@ def main_screen():
 
 
     screen.mainloop()
-
+    
 def student_login_screen():
 
     global student_screen
@@ -397,12 +417,11 @@ def student_login_screen():
 
     #buttons
     Button(mainframe, text = "Login", bd = 0, font = ("Goudy old style", 12), bg = "#6162FF", fg = "white", cursor ="hand2", command = student_login).place (x = 90, y = 320, width = 180, height = 40)
-
+    
     Button(mainframe, text = "Exit", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = screen.destroy).place (x = 90, y = 280)
+    
+    student_login_screen.mainloop()
 
-    student_screen.mainloop()
-
-root = Tk
 main_screen()
 
 
