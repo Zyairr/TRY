@@ -108,7 +108,7 @@ class InventoryManagement(Frame):
                 self.text.configure(state="disabled")
                 self._input1.focus_set()
                 
-                self.logout_btn = Button(self, text='Logout', command=self.logout)
+                self.logout_btn = Button(self, text = "Logout", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = self.logout).place (x = 500, y = 280)
                 self.logout_btn.grid(row=12, column=1, padx=5, pady=20, sticky=W)
 
             ''' addItem() function inserts headers into text area, grabs values from entry boxes 
@@ -286,7 +286,10 @@ class StudentShoppingFrame(Frame):
         # Populate the Listbox with available items
         self.populate_item_listbox()
         
-        self.student_logout_btn = Button(self, text='Logout', command=self.student_logout)
+        self.order_btn = Button(self, text='Order Item', command=self.order_item)
+        self.order_btn.grid(row=15, column=1, padx=5, pady=20, sticky=W)
+        
+        self.student_logout_btn = Button(self, text = "Logout", bd = 0, font = ("Goudy old style", 12), bg = "#6162FF", fg = "white", cursor ="hand2", command = self.student_logout).place (x = 40, y = 280, width = 180, height = 40)
         self.student_logout_btn.grid(row=12, column=1, padx=5, pady=20, sticky=W)
 
     def populate_item_listbox(self):
@@ -300,12 +303,27 @@ class StudentShoppingFrame(Frame):
         self.item_listbox.insert(END,
                                  '------------------------------------------------------------')
 
+        
         # Insert available items into the Listbox
-        for item in self.items:
+        for index, item in enumerate(self.items):
             self.item_listbox.insert(END, item[0] + '\t\t' + item[1] + '\t\t'
                                      + item[2] + '\t\t' + item[3])
+            order_button = Button(self, text='Order', command=lambda i=index: self.order_item(i))
+            order_button.grid(row=index + 3, column=4, padx=5)
         
         self.item_listbox.configure(state="disabled")
+        
+    def order_item(self, item_index):
+        selected_item = self.items[item_index]
+
+        # Check if there are items on hand
+        if selected_item[2] > 0:
+            selected_item[2] -= 1  # Decrement on_hand
+            messagebox.showinfo("Order Placed", f"You have ordered {selected_item[1]}")
+            self.populate_item_listbox()  # Refresh the Listbox
+        else:
+            messagebox.showinfo("Out of Stock", "This item is currently out of stock.")
+
     
     def student_logout(self):
         # Add any additional logout logic if needed
@@ -380,7 +398,6 @@ def student_login():
     elif student_code!= "admin":
         messagebox.showerror("Error", "Invalid Password")
 
-
 def main_screen():
     global main_screen_ref, screen, username, password
     
@@ -393,7 +410,6 @@ def main_screen():
     bg = PhotoImage(file = "background.png")
     bg_label = Label(screen, image = bg).place(x = 0, y = 0, relwidth = 1, relheight = 1)
     
-
     #icon
     image_icon = PhotoImage(file= "logo.png")
     screen.iconphoto(False, image_icon)
@@ -466,7 +482,7 @@ def student_login_screen():
     
     Button(mainframe, text = "Exit", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = screen.destroy).place (x = 90, y = 280)
     
-    student_login_screen.mainloop()
+    mainloop()
 
 main_screen()
 
