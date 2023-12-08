@@ -2,6 +2,13 @@ from tkinter import *
 from tkinter import messagebox
 import os
 
+# Global variables
+screen = None
+username = None
+password = None
+student_username = None
+student_password = None
+student_screen = None
 
 def login():
     user=username.get()
@@ -278,8 +285,26 @@ def student_login():
 
     if student_user == "student" and student_code == "password":
         messagebox.showinfo("Success", "Student login successful!")
-    else:
-        messagebox.showerror("Error", "Invalid student username or password")
+        root = Toplevel(student_screen)
+        root.geometry("650x450")
+        root.resizable (False, False)
+    elif student_user == "" and student_code == "":
+        messagebox.showerror("Error", "Username and password cannot be empty")
+    
+    elif student_user == "":
+        messagebox.showerror("Error", "Username cannot be empty")
+    
+    elif student_code == "":
+        messagebox.showerror("Error", "Password cannot be empty")
+
+    elif student_user != "admin" and student_code != "admin":
+        messagebox.showerror("Error", "Invalid Username or Password")
+    
+    elif student_user != "admin":
+        messagebox.showerror("Error", "Invalid Username")
+
+    elif student_code!= "admin":
+        messagebox.showerror("Error", "Invalid Password")
 
 
 def main_screen():
@@ -306,7 +331,7 @@ def main_screen():
     mainframe = Frame( bg = "white")
     mainframe.place( x = 330, y = 150, width = 500, height = 400)
 
-    lblTitle = Label(text= "BSU SHOP LOGIN", font = ("Impact", 35, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 160)
+    lblTitle = Label(text= "BSU SHOP ADMIN LOGIN", font = ("Impact", 30, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 160)
     lblsubtitle = Label(text = "Login Here:", font = ("Goudy old style", 15, "bold"), fg = "#1d1d1d", bg = "white").place (x = 380, y = 250)
 
     
@@ -324,40 +349,52 @@ def main_screen():
 
     #buttons
     Button(mainframe, text = "Login", bd = 0, font = ("Goudy old style", 12), bg = "#6162FF", fg = "white", cursor ="hand2", command = login).place (x = 90, y = 320, width = 180, height = 40)
-    
-    Button(mainframe, text="Student Login", bd=0, font=("Goudy old style", 12),
-           bg="#6162FF", fg="white", cursor="hand2", command=student_login).place(x=280, y=320, width=180, height=40)
 
+    Button(mainframe, text = "Student Login", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = student_login_screen).place (x = 310, y = 280)
     Button(mainframe, text = "Exit", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = screen.destroy).place (x = 90, y = 280)
 
 
     screen.mainloop()
 
 def student_login_screen():
+
     global student_screen
     global student_username
     global student_password
+    
+     #background image
+    bg = PhotoImage(file = "background.png")
+    bg_label = Label(screen, image = bg).place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
-    student_screen = Tk()
-    student_screen.geometry("400x300+500+200")
-    student_screen.title("Student Login")
+    #icon
+    image_icon = PhotoImage(file= "logo.png")
+    screen.iconphoto(False, image_icon)
+    screen.title("BATANGAS STATE UNIVERSITY")
+
+    mainframe = Frame( bg = "white")
+    mainframe.place( x = 330, y = 150, width = 500, height = 400)
+
+    lblTitle = Label(text= "BSU SHOP STUDENT LOGIN", font = ("Impact", 30, "bold"), fg = "#6162FF", bg = "white").place(x = 360, y = 160)
+    lblsubtitle = Label(text = "Login Here:", font = ("Goudy old style", 15, "bold"), fg = "#1d1d1d", bg = "white").place (x = 380, y = 250)
+
+    Label (mainframe, text = "Username:", font = ("Goudy old style", 15, "bold"), fg = "black", bg = "white").place(x = 90, y = 140)
+    Label (mainframe, text = "Password:", font = ("Goudy old style", 15, "bold"), fg = "black", bg = "white").place (x = 90, y = 210)
 
     student_username = StringVar()
     student_password = StringVar()
 
-    Label(student_screen, text="Student Username:").pack(pady=10)
-    Entry(student_screen, textvariable=student_username).pack()
+    student_entry_username = Entry (mainframe, textvariable= student_username, width= 12, bd = 2, font = ("arial", 30))
+    student_entry_username.place (x = 90, y =170, width = 320, height = 35)
 
-    Label(student_screen, text="Student Password:").pack(pady=10)
-    Entry(student_screen, textvariable=student_password, show="*").pack()
+    student_entry_password = Entry (mainframe, textvariable= student_password, width= 12, bd = 2, font = ("arial", 30), show = "*")
+    student_entry_password.place (x = 90, y =240, width = 320, height = 35)
 
-    Button(student_screen, text="Login", command=student_login).pack(pady=20)
+    #buttons
+    Button(mainframe, text = "Student Login", bd = 0, font = ("Goudy old style", 12), bg = "#6162FF", fg = "white", cursor ="hand2", command = student_login).place (x = 90, y = 320, width = 180, height = 40)
+
+    Button(mainframe, text = "Exit", bd = 0, font = ("Goudy old style", 12), fg = "#6162FF", bg = "white", command = screen.destroy).place (x = 90, y = 280)
 
     student_screen.mainloop()
-
-
-
-
 
 root = Tk
 main_screen()
